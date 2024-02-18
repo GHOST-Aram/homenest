@@ -6,10 +6,10 @@ export interface User{
     name: string
     email: string
     password: string
-    profilePicture: Buffer
-    pictureUrl: string
-    banner: Buffer
-    role: string
+    profilePicture?: Buffer
+    pictureUrl?: string
+    banner?: Buffer
+    role?: string
 }
 
 interface UserMethods{
@@ -28,7 +28,8 @@ const userSchema = new Schema<User, UserModel,UserMethods>({
         unique: true
     },
     password:{
-        type: String
+        type: String,
+        required: true
     },
     pictureUrl:{
         type: String
@@ -39,7 +40,9 @@ const userSchema = new Schema<User, UserModel,UserMethods>({
     },
     role:{
         type: String,
-        enum: ['landlord', 'tenant', 'admin']
+        enum: ['landlord', 'tenant', 'admin'],
+        required: true,
+        default: 'tenant'
     }
 })
 
