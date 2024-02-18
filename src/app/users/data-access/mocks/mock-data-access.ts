@@ -50,6 +50,15 @@ export default class MockDataAccess extends DataAccess{
             else return null
     })
 
+    public findByIdAndDelete = jest.fn(async(id: string): Promise<HydratedUserDoc | null> =>{
+       
+        if(id === EXISTING_USER_ID){
+            return new this.model(userData)
+        }
+
+        else return null
+    })
+
 }
 
 const createDocsArray = (length: number): HydratedUserDoc[] =>{

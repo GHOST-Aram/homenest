@@ -96,7 +96,22 @@ export class Controller{
     }
 
     public deleteOne = async(id: string): Promise<NextResponse> =>{
-        return new NextResponse()
+        const deletedDoc = await this.dataAccess.findByIdAndDelete(id)
+
+        if(Boolean(deletedDoc))
+            return new NextResponse(JSON.stringify(deletedDoc), { 
+                status: 200,
+                headers:{
+                    'Content-Type': 'application/json'
+                }
+            })
+        
+        else
+            return new NextResponse(null, { status: 404,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
     }
 }
 

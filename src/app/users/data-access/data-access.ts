@@ -29,4 +29,8 @@ export class DataAccess{
         
         return await this.model.findByIdAndUpdate(id, updateDoc)
     }
+
+    public findByIdAndDelete = async(id: string): Promise<HydratedUserDoc | null> =>{
+        return await this.model.findByIdAndDelete(id)
+    }
 }
