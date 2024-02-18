@@ -86,6 +86,10 @@ export class Controller{
         }
 
     }
+
+    public modifyOne = async(id: string, updateDoc: Object): Promise<NextResponse> =>{
+        return new NextResponse()
+    }
 }
 
 export type Paginator = {
