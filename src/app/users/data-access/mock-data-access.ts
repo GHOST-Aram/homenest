@@ -7,6 +7,8 @@ import { jest } from "@jest/globals";
 import { existingUser} from "../controller/test.data";
 import { DataAccess } from "./data-access";
 
+const EXISTING_USER_ID = '64c9e4f2df7cc072af2ac9e4'
+
 export default class MockDataAccess extends DataAccess{
 
     constructor(model: UserModel){
@@ -24,4 +26,13 @@ export default class MockDataAccess extends DataAccess{
         }
         else return null
     })
+
+    public findById = jest.fn(async(id: string): Promise<HydratedUserDoc | null> =>{
+        if(id === EXISTING_USER_ID)   {
+            return new this.model(existingUser)
+        } else {
+            return null
+        }
+    })
+
 }

@@ -31,4 +31,19 @@ export class Controller{
             })
         }
     }
+
+    public getOne = async(userId: string): Promise<NextResponse> =>{
+        const user = await this.dataAccess.findById(userId)
+        
+        if(!user){
+            return new NextResponse(null, {
+                status: 404,
+                headers:{
+                    'Content-Type': 'application/json'
+                }
+            })
+        } else {
+            return new NextResponse()
+        }
+    }
 }

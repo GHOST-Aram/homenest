@@ -10,8 +10,12 @@ export class DataAccess{
     public createNew = async(data: User): Promise<HydratedUserDoc> =>{
         return await this.model.create(data)
     }
-    
+
     public findByEmail = async(email: string): Promise<HydratedUserDoc | null> =>{
         return await this.model.findOne({ email })
+    }
+
+    public findById = async(id: string): Promise<HydratedUserDoc | null> =>{
+        return await this.model.findById(id, '-password')   
     }
 }
