@@ -24,6 +24,7 @@ describe('POST Route handler', () => {
             const response =  await controller.addNew(userData)
             
             expect(response.status).toEqual(201)
+            expect(response.headers.get('Location')).toMatch(/\/users\/[0-9a-f]{24}/)
             expect(response.headers.get('Content-Type')).toMatch(/json/)
         }
     )
