@@ -14,10 +14,9 @@ export class Controller{
 
         if(exisitngUser){
             return new NextResponse(null, { status: 409,
-                headers:{
-                    'Content-Type': 'application/json'
-                }
+                headers:{ 'Content-Type': 'application/json' }
             })
+
         } else{
             const newUser = await this.dataAccess.createNew(data)
             
@@ -50,6 +49,7 @@ export class Controller{
 
     public getMany = async(pagination: Paginator): Promise<NextResponse> =>{
         const users = await this.dataAccess.findMany(pagination)
+
         return new NextResponse(JSON.stringify(users), { status: 200,
             headers: { 'Content-Type': 'application/json' }
         })
@@ -62,9 +62,10 @@ export class Controller{
             return new NextResponse(null,{ status: 200,
                 headers: {
                     'Content-Type': 'application/json',
-                    'Location':`/users/${updatedUser?.id}`
+                    'Location':`/users/${updatedUser.id}`
                 }
             })
+
         } else{
             const newUser = await this.dataAccess.createNew(updateDoc)
             
@@ -92,6 +93,10 @@ export class Controller{
         return new NextResponse(null,{ status: 404,
                 headers: { 'Content-Type': 'application/json',}})
         
+    }
+
+    public deleteOne = async(id: string): Promise<NextResponse> =>{
+        return new NextResponse()
     }
 }
 
