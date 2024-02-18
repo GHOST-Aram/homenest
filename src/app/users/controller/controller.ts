@@ -19,7 +19,15 @@ export class Controller{
                     'Content-Type': 'application/json'
                 }
             })
+        } else{
+            const newUser = await this.dataAccess.createNew(data)
+            
+            return new NextResponse(JSON.stringify(newUser), {
+                status: 201,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
         }
-        return new NextResponse()
     }
 }
