@@ -24,7 +24,7 @@ export class DataAccess{
         return await this.model.find().skip(pagination.skip).limit(pagination.limit)
     }
 
-    public findByIdAndUpdate = async(id: string, updateDoc: User
+    public findByIdAndUpdate = async(id: string, updateDoc: User | Object
         ): Promise<HydratedUserDoc | null> =>{
         
         return await this.model.findByIdAndUpdate(id, updateDoc)

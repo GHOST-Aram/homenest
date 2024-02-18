@@ -40,7 +40,7 @@ export default class MockDataAccess extends DataAccess{
         return createDocsArray(pagination.limit)
     })  
 
-    public findByIdAndUpdate = jest.fn(async(id: string, updateDoc: User
+    public findByIdAndUpdate = jest.fn(async(id: string, updateDoc: User |Object
         ): Promise<HydratedUserDoc | null> =>{
 
             if(id === EXISTING_USER_ID){
