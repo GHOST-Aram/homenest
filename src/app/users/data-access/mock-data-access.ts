@@ -6,6 +6,7 @@ import {
 import { jest } from "@jest/globals";
 import { existingUser} from "../controller/test.data";
 import { DataAccess } from "./data-access";
+import { Paginator } from "../controller/controller";
 
 const EXISTING_USER_ID = '64c9e4f2df7cc072af2ac9e4'
 
@@ -35,4 +36,18 @@ export default class MockDataAccess extends DataAccess{
         }
     })
 
+    public findMany = jest.fn(async(pagination: Paginator): Promise<HydratedUserDoc[]> =>{
+        return createDocsArray(pagination.limit)
+    })  
+
+}
+
+const createDocsArray = (length: number): HydratedUserDoc[] =>{
+    const users: HydratedUserDoc[] = []
+
+    while(length > 0){
+        users.push(new User(existingUser))
+        length --
+    }
+    return users
 }

@@ -1,3 +1,4 @@
+import { Paginator } from "../controller/controller";
 import { HydratedUserDoc, UserModel, User } from "./model";
 
 export class DataAccess{
@@ -17,5 +18,9 @@ export class DataAccess{
 
     public findById = async(id: string): Promise<HydratedUserDoc | null> =>{
         return await this.model.findById(id, '-password')   
+    }
+
+    public findMany = async(pagination: Paginator): Promise<HydratedUserDoc[]> =>{
+        return await this.model.find().skip(pagination.skip).limit(pagination.limit)
     }
 }

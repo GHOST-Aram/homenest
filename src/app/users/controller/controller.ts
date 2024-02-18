@@ -51,4 +51,19 @@ export class Controller{
             })
         }
     }
+
+    public getMany = async(pagination: Paginator): Promise<NextResponse> =>{
+        const users = await this.dataAccess.findMany(pagination)
+        return new NextResponse(JSON.stringify(users), {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+}
+
+export type Paginator = {
+    limit: number,
+    skip: number
 }
