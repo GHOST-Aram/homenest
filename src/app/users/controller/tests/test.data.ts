@@ -11,4 +11,4 @@ export const existingUser = {
 }
 
 export const EXISTING_USER_ID = '64c9e4f2df7cc072af2ac9e4'
-export const NOR_EXISIT_USER_ID = '64c9e4f2df7cc072af2ac9e8'
+export const NOT_EXIST_USER_ID = '64c9e4f2df7cc072af2ac9e8'
