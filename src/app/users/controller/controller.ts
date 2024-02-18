@@ -43,7 +43,12 @@ export class Controller{
                 }
             })
         } else {
-            return new NextResponse()
+            return new NextResponse(JSON.stringify(user), {
+                status: 200,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
         }
     }
 }
