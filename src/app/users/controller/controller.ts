@@ -61,6 +61,22 @@ export class Controller{
             }
         })
     }
+
+    public updateOne = async(userId: string, updateDoc: User): Promise<NextResponse> =>{
+        const updatedUser = await this.dataAccess.findByIdAndUpdate(userId, updateDoc)
+
+        if(updatedUser){
+            return new NextResponse(null,{
+                status: 200,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Location':`/users/${updatedUser?.id}`
+                }
+            })
+        }
+
+        return new NextResponse()
+    }
 }
 
 export type Paginator = {

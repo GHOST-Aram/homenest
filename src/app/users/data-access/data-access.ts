@@ -23,4 +23,10 @@ export class DataAccess{
     public findMany = async(pagination: Paginator): Promise<HydratedUserDoc[]> =>{
         return await this.model.find().skip(pagination.skip).limit(pagination.limit)
     }
+
+    public findByIdAndUpdate = async(id: string, updateDoc: User
+        ): Promise<HydratedUserDoc | null> =>{
+        
+        return await this.model.findByIdAndUpdate(id, updateDoc)
+    }
 }

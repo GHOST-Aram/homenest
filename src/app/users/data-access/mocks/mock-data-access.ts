@@ -4,7 +4,7 @@ import {
     User 
 } from "../model";
 import { jest } from "@jest/globals";
-import { existingUser} from "../../controller/tests/test.data";
+import { existingUser, userData} from "../../controller/tests/test.data";
 import { DataAccess } from "../data-access";
 import { Paginator } from "../../controller/controller";
 
@@ -39,6 +39,16 @@ export default class MockDataAccess extends DataAccess{
     public findMany = jest.fn(async(pagination: Paginator): Promise<HydratedUserDoc[]> =>{
         return createDocsArray(pagination.limit)
     })  
+
+    public findByIdAndUpdate = jest.fn(async(id: string, updateDoc: User
+        ): Promise<HydratedUserDoc | null> =>{
+
+            if(id === EXISTING_USER_ID){
+                return new this.model(userData)
+            }
+
+            else return null
+    })
 
 }
 
