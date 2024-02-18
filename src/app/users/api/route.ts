@@ -5,6 +5,7 @@ import { Controller } from "../controller/controller";
 import '../config/db'
 import { Validator } from "@/z-library/validation/validator";
 import { userSchema } from "./validation-schema";
+import { handleServerErrors } from "@/z-library/HTTP/http-errors";
 
 const dataAccess = new DataAccess(User) 
 const controller = new Controller(dataAccess)
@@ -17,6 +18,10 @@ export const POST = async(request: NextRequest) =>{
     if(validationErrors){
         return validator.handleValidationErrors(validationErrors)
     } else {
-        return controller.addNew(userData)
+        try{
+            return controller.addNew(userData)
+        } catch(error){
+            return handleServerErrors(error)
+        }
     }
 }
