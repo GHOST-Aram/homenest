@@ -8,7 +8,6 @@ export interface User{
     password: string
     profilePicture?: Buffer
     pictureUrl?: string
-    banner?: Buffer
     role?: string
 }
 
