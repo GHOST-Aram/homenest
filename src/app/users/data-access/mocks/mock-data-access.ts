@@ -2,11 +2,11 @@ import {
     HydratedUserDoc,
     UserModel,
     User 
-} from "./model";
+} from "../model";
 import { jest } from "@jest/globals";
-import { existingUser} from "../controller/test.data";
-import { DataAccess } from "./data-access";
-import { Paginator } from "../controller/controller";
+import { existingUser} from "../../controller/tests/test.data";
+import { DataAccess } from "../data-access";
+import { Paginator } from "../../controller/controller";
 
 const EXISTING_USER_ID = '64c9e4f2df7cc072af2ac9e4'
 
