@@ -1,11 +1,8 @@
-import DataAccess  from "../data-access/mock-data-access";
-import { User } from "../data-access/model";
-import { Controller } from "./controller";
+import { controller } from './test.config';
 import { describe, test, expect } from '@jest/globals'
 import { existingUser, userData } from "./test.data";
 
-const dataAccess = new DataAccess(User)
-const controller = new Controller(dataAccess)
+
 
 
 describe('POST Route handler', () => {
