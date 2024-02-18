@@ -25,7 +25,8 @@ export class Controller{
             return new NextResponse(JSON.stringify(newUser), {
                 status: 201,
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Location': `/users/${newUser.id}`
                 }
             })
         }
