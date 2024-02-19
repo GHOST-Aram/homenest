@@ -30,6 +30,12 @@ export const PUT = async(request: NextRequest, { params }: urlParams): Promise<N
     const updateData: User = await request.json()
     const userId = params.userId
 
+    try {
+        validator.validateReferenceId(userId)
+    } catch (error:any) {
+        return validator.handleValidationErrors(error.message)
+    }
+
     const validationErrors = validator.validateUserInput(updateData, userSchema)
 
     if(validationErrors){
@@ -46,6 +52,12 @@ export const PUT = async(request: NextRequest, { params }: urlParams): Promise<N
 export const PATCH = async(request: NextRequest, { params }: urlParams ) : Promise<NextResponse> =>{
     const updateData: User = await request.json()
     const userId = params.userId
+
+    try {
+        validator.validateReferenceId(userId)
+    } catch (error:any) {
+        return validator.handleValidationErrors(error.message)
+    }
 
     const validationErrors = validator.validateUserInput(updateData, userModificationSchema)
 
