@@ -7,7 +7,7 @@ import { validator } from "@/z-library/validation/validator";
 import { userModificationSchema, userSchema } from "../validation-schema";
 import { handleServerErrors } from "@/z-library/HTTP/http-errors";
 import { ReferenceIDError } from "@/z-library/validation/validation-errors";
-import Joi from "joi";
+import { ValidationError as InputValidationError } from "joi";
 
 const dataAccess = new DataAccess(User) 
 const controller = new Controller(dataAccess)
@@ -37,7 +37,7 @@ export const PUT = async(request: NextRequest, { params }: urlParams): Promise<N
         return controller.updateOne(userId, updateData)
     } catch (error) {
         
-        if(error instanceof Joi.ValidationError){
+        if(error instanceof InputValidationError){
             return validator.handleValidationErrors(error)
 
         } else if (error instanceof ReferenceIDError){
@@ -62,7 +62,7 @@ export const PATCH = async(request: NextRequest, { params }: urlParams ) : Promi
 
     } catch (error) {
         
-        if(error instanceof Joi.ValidationError){
+        if(error instanceof InputValidationError){
             return validator.handleValidationErrors(error)
 
         } else if (error instanceof ReferenceIDError){

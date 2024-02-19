@@ -6,8 +6,7 @@ import './config/db'
 import { validator } from "@/z-library/validation/validator";
 import { userSchema } from "./validation-schema";
 import { handleServerErrors } from "@/z-library/HTTP/http-errors";
-import Joi from "joi";
-
+import { ValidationError as InputValidationError } from "joi";
 const dataAccess = new DataAccess(User) 
 const controller = new Controller(dataAccess)
 
@@ -18,7 +17,7 @@ export const POST = async(request: NextRequest) =>{
         await validator.validateUserInput(userData, userSchema)
         return await controller.addNew(userData)
     } catch(error){
-        if(error instanceof Joi.ValidationError){
+        if(error instanceof InputValidationError){
             return validator.handleValidationErrors(error)
         } else {
             return handleServerErrors()
