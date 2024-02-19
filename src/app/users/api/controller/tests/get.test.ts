@@ -8,6 +8,7 @@ describe('GET route handler', () =>{
 
             expect(response.status).toEqual(404)
             expect(response.headers.get('Content-Type')).toMatch(/json/)
+            expect(await response.json()).toMatch(/not found/i)
         }
     )
 

@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import { DataAccess } from "../data-access/data-access";
 import { User } from "../data-access/model";
 
@@ -9,18 +8,16 @@ export class Controller{
         this.dataAccess = dataAccess
     }
 
-    public addNew = async(data: User): Promise<NextResponse> =>{
+    public addNew = async(data: User): Promise<Response> =>{
         const exisitngUser = await this.dataAccess.findByEmail(data.email)
 
         if(exisitngUser){
-            return new NextResponse(null, { status: 409,
-                headers:{ 'Content-Type': 'application/json' }
-            })
+            return Response.json('The email has already been taken', { status: 409, })
 
         } else{
             const newUser = await this.dataAccess.createNew(data)
             
-            return new NextResponse(JSON.stringify(newUser), { status: 201,
+            return Response.json(newUser, { status: 201,
                 headers: {
                     'Content-Type': 'application/json',
                     'Location': `/users/${newUser.id}`
@@ -29,41 +26,28 @@ export class Controller{
         }
     }
 
-    public getOne = async(userId: string): Promise<NextResponse> =>{
+    public getOne = async(userId: string): Promise<Response> =>{
         const user = await this.dataAccess.findById(userId)
         
         if(!user){
-            return new NextResponse(null, { status: 404,
-                headers:{
-                    'Content-Type': 'application/json'
-                }
-            })
+            return Response.json('Not Found', { status: 404 })
         } else {
-            return new NextResponse(JSON.stringify(user), { status: 200,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
+            return Response.json(user, {status: 200})
         }
     }
 
-    public getMany = async(pagination: Paginator): Promise<NextResponse> =>{
+    public getMany = async(pagination: Paginator): Promise<Response> =>{
         const users = await this.dataAccess.findMany(pagination)
 
-        return new NextResponse(JSON.stringify(users), { status: 200,
-            headers: { 'Content-Type': 'application/json' }
-        })
+        return Response.json(users, { status: 200 })
     }
 
-    public updateOne = async(userId: string, updateDoc: User): Promise<NextResponse> =>{
+    public updateOne = async(userId: string, updateDoc: User): Promise<Response> =>{
         const updatedUser = await this.dataAccess.findByIdAndUpdate(userId, updateDoc)
 
         if(updatedUser){
-            return new NextResponse(null,{ status: 200,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Location':`/users/${updatedUser.id}`
-                }
+            return Response.json('Created',{ status: 200,
+                headers: { 'Location':`/users/${updatedUser.id}` }
             })
 
         } else{
@@ -71,39 +55,26 @@ export class Controller{
         }
     }
 
-    public modifyOne = async(id: string, updateDoc: Object): Promise<NextResponse> =>{
+    public modifyOne = async(id: string, updateDoc: Object): Promise<Response> =>{
         const updatedUser = await this.dataAccess.findByIdAndUpdate(id, updateDoc)
 
         if(updatedUser)
-            return new NextResponse(null, { status: 200, 
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Location': `/users/${updatedUser.id}`
-                }
+            return Response.json('Modified', { status: 200, 
+                headers: { 'Location': `/users/${updatedUser.id}` }
             })
         
-        return new NextResponse(null,{ status: 404,
-                headers: { 'Content-Type': 'application/json',}})
+        return Response.json('Not Found',{ status: 404 })
         
     }
 
-    public deleteOne = async(id: string): Promise<NextResponse> =>{
+    public deleteOne = async(id: string): Promise<Response> =>{
         const deletedDoc = await this.dataAccess.findByIdAndDelete(id)
 
         if(Boolean(deletedDoc))
-            return new NextResponse(JSON.stringify(deletedDoc), { 
-                status: 200,
-                headers:{
-                    'Content-Type': 'application/json'
-                }
-            })
+            return Response.json(deletedDoc, { status: 200 })
         
         else
-            return new NextResponse(null, { status: 404,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
+            return Response.json('Not Found', { status: 404 })
     }
 }
 

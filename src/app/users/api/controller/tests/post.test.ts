@@ -13,6 +13,7 @@ describe('POST Route handler', () => {
 
             expect(response.status).toEqual(409)
             expect(response.headers.get('Content-Type')).toMatch(/json/)
+            expect(await response.json()).toMatch(/been taken/i)
         }
     )
 
