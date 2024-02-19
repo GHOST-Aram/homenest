@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { DataAccess } from "../data-access/data-access";
 import { User } from "../data-access/model";
 import { Controller } from "../controller/controller";
@@ -12,7 +12,7 @@ import { InputValidationError } from "@/z-library/validation/validation-errors";
 const dataAccess = new DataAccess(User) 
 const controller = new Controller(dataAccess)
 
-export const GET = async(_request: NextRequest, { params }: urlParams): Promise<NextResponse> =>{
+export const GET = async(_request: NextRequest, { params }: urlParams): Promise<Response> =>{
     const userId = params.userId
     
     try {
@@ -26,7 +26,7 @@ export const GET = async(_request: NextRequest, { params }: urlParams): Promise<
     }
 }
 
-export const PUT = async(request: NextRequest, { params }: urlParams): Promise<NextResponse> =>{
+export const PUT = async(request: NextRequest, { params }: urlParams): Promise<Response> =>{
     const userId = params.userId
     const updateData: User = await request.json()
  
@@ -50,7 +50,7 @@ export const PUT = async(request: NextRequest, { params }: urlParams): Promise<N
 }  
 
 
-export const PATCH = async(request: NextRequest, { params }: urlParams ) : Promise<NextResponse> =>{
+export const PATCH = async(request: NextRequest, { params }: urlParams ) : Promise<Response> =>{
     const updateData: User = await request.json()
     const userId = params.userId
 
@@ -74,7 +74,7 @@ export const PATCH = async(request: NextRequest, { params }: urlParams ) : Promi
     }
 }
 
-export const DELETE = async(_request: NextRequest, { params }:urlParams ) =>{
+export const DELETE = async(_request: NextRequest, { params }:urlParams ): Promise<Response> =>{
     const userId = params.userId
     
     try {

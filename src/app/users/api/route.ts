@@ -7,10 +7,11 @@ import { validator } from "@/z-library/validation/validator";
 import { userSchema } from "./validation-schema";
 import { handleServerErrors } from "@/z-library/HTTP/http-errors";
 import { InputValidationError } from "@/z-library/validation/validation-errors";
+
 const dataAccess = new DataAccess(User) 
 const controller = new Controller(dataAccess)
 
-export const POST = async(request: NextRequest) =>{
+export const POST = async(request: NextRequest): Promise<Response> =>{
     const userData:User = await request.json()
     
     try{
@@ -26,7 +27,7 @@ export const POST = async(request: NextRequest) =>{
 }
 
 
-export const GET = async(request: NextRequest) =>{ 
+export const GET = async(request: NextRequest): Promise<Response> =>{ 
     const paginator = paginate(request)
     
     try {
