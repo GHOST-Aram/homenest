@@ -3,14 +3,16 @@ import { DataAccess } from "../data-access/data-access";
 import { User } from "../data-access/model";
 import { Controller } from "../controller/controller";
 import '../config/db'
-import { Validator } from "@/z-library/validation/validator";
+import { Validator, validateReferenceId } from "@/z-library/validation/validator";
 import { userModificationSchema, userSchema } from "../validation-schema";
 import { handleServerErrors } from "@/z-library/HTTP/http-errors";
 
 const dataAccess = new DataAccess(User) 
 const controller = new Controller(dataAccess)
 
-export const PUT = async(request: NextRequest, { params }: PutParams): Promise<NextResponse> =>{
+
+
+export const PUT = async(request: NextRequest, { params }: urlParams): Promise<NextResponse> =>{
     const updateData: User = await request.json()
     const userId = params.userId
 
@@ -28,7 +30,7 @@ export const PUT = async(request: NextRequest, { params }: PutParams): Promise<N
     }  
 }
 
-export const PATCH = async(request: NextRequest, { params }: PutParams ) : Promise<NextResponse> =>{
+export const PATCH = async(request: NextRequest, { params }: urlParams ) : Promise<NextResponse> =>{
     const updateData: User = await request.json()
     const userId = params.userId
 
@@ -46,7 +48,29 @@ export const PATCH = async(request: NextRequest, { params }: PutParams ) : Promi
     }  
 }
 
-type PutParams = {
+export const DELETE = async(request: NextRequest, { params }:urlParams ) =>{
+    const userId = params.userId
+    
+    try {
+        validateReferenceId(userId)
+    } catch (error:any) {
+        return new NextResponse(JSON.stringify(error.message), {
+            status: 400,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+    
+    try {
+        return controller.deleteOne(userId)
+    } catch (error) {
+        return handleServerErrors()
+    }
+    
+}
+
+type urlParams = {
     params: {
         userId: string
     }
