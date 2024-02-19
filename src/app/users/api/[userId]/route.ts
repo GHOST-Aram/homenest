@@ -3,7 +3,7 @@ import { DataAccess } from "../data-access/data-access";
 import { User } from "../data-access/model";
 import { Controller } from "../controller/controller";
 import '../config/db'
-import { Validator, validateReferenceId } from "@/z-library/validation/validator";
+import { validator } from "@/z-library/validation/validator";
 import { userModificationSchema, userSchema } from "../validation-schema";
 import { handleServerErrors } from "@/z-library/HTTP/http-errors";
 
@@ -14,14 +14,9 @@ export const GET = async(_request: NextRequest, { params }: urlParams): Promise<
     const userId = params.userId
     
     try {
-        validateReferenceId(userId)
+        validator.validateReferenceId(userId)
     } catch (error:any) {
-        return new NextResponse(JSON.stringify(error.message), {
-            status: 400,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+        return validator.handleValidationErrors(error.message)
     }
     
     try {
@@ -35,7 +30,6 @@ export const PUT = async(request: NextRequest, { params }: urlParams): Promise<N
     const updateData: User = await request.json()
     const userId = params.userId
 
-    const validator = new Validator()
     const validationErrors = validator.validateUserInput(updateData, userSchema)
 
     if(validationErrors){
@@ -53,7 +47,6 @@ export const PATCH = async(request: NextRequest, { params }: urlParams ) : Promi
     const updateData: User = await request.json()
     const userId = params.userId
 
-    const validator = new Validator()
     const validationErrors = validator.validateUserInput(updateData, userModificationSchema)
 
     if(validationErrors){
@@ -71,14 +64,9 @@ export const DELETE = async(_request: NextRequest, { params }:urlParams ) =>{
     const userId = params.userId
     
     try {
-        validateReferenceId(userId)
+        validator.validateReferenceId(userId)
     } catch (error:any) {
-        return new NextResponse(JSON.stringify(error.message), {
-            status: 400,
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+        return validator.handleValidationErrors(error.message)
     }
     
     try {

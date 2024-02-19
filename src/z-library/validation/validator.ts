@@ -2,7 +2,7 @@ import { ObjectSchema, ValidationError } from "joi";
 import { isValidObjectId } from "mongoose";
 import { NextResponse } from "next/server";
 
-export class Validator {
+class Validator {
    
 
     public validateUserInput = (userData: Object,  validationSchema: ObjectSchema): ValidationError | undefined =>{
@@ -10,6 +10,11 @@ export class Validator {
         return error
     }
 
+    public validateReferenceId = (id: string) =>{
+        if(isValidObjectId(id))
+            return
+        throw new Error('Invalid reference id. Id must be a hexadecimal string of length 24.')
+    }
     
     public handleValidationErrors = (errors: ValidationError): NextResponse =>{
         
@@ -21,8 +26,5 @@ export class Validator {
         })
     }
 }
-export const validateReferenceId = (id: string) =>{
-    if(isValidObjectId(id))
-        return
-    throw new Error('Invalid reference id. Id must be a hexadecimal string of length 24.')
-}
+
+export const validator  = new Validator()

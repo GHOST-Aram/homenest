@@ -3,7 +3,7 @@ import { DataAccess } from "./data-access/data-access";
 import { User } from "./data-access/model";
 import { Controller, Paginator } from "./controller/controller";
 import './config/db'
-import { Validator } from "@/z-library/validation/validator";
+import { validator } from "@/z-library/validation/validator";
 import { userSchema } from "./validation-schema";
 import { handleServerErrors } from "@/z-library/HTTP/http-errors";
 
@@ -12,7 +12,6 @@ const controller = new Controller(dataAccess)
 
 export const POST = async(request: NextRequest) =>{
     const userData:User = await request.json()
-    const validator = new Validator()
     const validationErrors = validator.validateUserInput(userData, userSchema)
 
     if(validationErrors){
