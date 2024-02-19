@@ -67,16 +67,8 @@ export class Controller{
             })
 
         } else{
-            const newUser = await this.dataAccess.createNew(updateDoc)
-            
-            return new NextResponse(null, { status: 201,
-                headers:{
-                    'Content-Type': 'application/json',
-                    'Location': `/users/${newUser.id}`
-                }
-            })
+            return this.addNew(updateDoc)
         }
-
     }
 
     public modifyOne = async(id: string, updateDoc: Object): Promise<NextResponse> =>{
