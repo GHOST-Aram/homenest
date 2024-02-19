@@ -18,7 +18,7 @@ export class Controller extends HTTPResponse{
 
         } else{
             const newUser = await this.dataAccess.createNew(data)
-            return this.sendCreatedItemUrl(newUser.id)
+            return this.sendCreatedItemUrl(`/users/${newUser.id}`)
         }
     }
 
@@ -41,7 +41,7 @@ export class Controller extends HTTPResponse{
         const updatedUser = await this.dataAccess.findByIdAndUpdate(userId, updateDoc)
 
         if(updatedUser){
-           return this.sendUpdatedItemUrl(updatedUser.id)
+           return this.sendUpdatedItemUrl(`/users/${updatedUser.id}` )
 
         } else{
             return this.addNew(updateDoc)
@@ -52,7 +52,7 @@ export class Controller extends HTTPResponse{
         const modifiedUser = await this.dataAccess.findByIdAndUpdate(id, updateDoc)
 
         if(modifiedUser)
-            return this.sendModifedItemUrl(modifiedUser.id)
+            return this.sendModifedItemUrl(`/users/${modifiedUser.id}` )
         else
             return this.sendNotFoundResponse()
         

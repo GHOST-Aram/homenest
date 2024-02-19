@@ -1,15 +1,13 @@
 import { HydratedDocument } from "mongoose"
 
 export class HTTPResponse{
+
     public sendConflictResponse = (message: string): Response =>{
         return Response.json(message, { status: 409, })
     }
 
-    public sendCreatedItemUrl = (id: string): Response =>{
-        return Response.json('Created', { status: 201, headers: { 
-                'Location': `/users/${id}`
-            }
-        })
+    public sendCreatedItemUrl = (url: string): Response =>{
+        return Response.json('Created', { status: 201, headers: { 'Location': url } })
     }
 
     public sendNotFoundResponse = (): Response =>{
@@ -20,15 +18,15 @@ export class HTTPResponse{
             return Response.json(foundDoc, { status: 200 })
     }
 
-    public sendUpdatedItemUrl = (updatedId: string) =>{
+    public sendUpdatedItemUrl = (url: string) =>{
         return Response.json('Updated',{ status: 200,
-            headers: { 'Location':`/users/${updatedId}` }
+            headers: { 'Location': url }
         })
     }
 
-    public sendModifedItemUrl = (id: string) =>{
+    public sendModifedItemUrl = (url: string) =>{
         return Response.json('Modified', { status: 200, 
-            headers: { 'Location': `/users/${id}` }
+            headers: { 'Location': url}
         })
     }
 
