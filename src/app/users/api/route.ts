@@ -6,7 +6,7 @@ import './config/db'
 import { validator } from "@/z-library/validation/validator";
 import { userSchema } from "./validation-schema";
 import { handleServerErrors } from "@/z-library/HTTP/http-errors";
-import { ValidationError as InputValidationError } from "joi";
+import { InputValidationError } from "@/z-library/validation/validation-errors";
 const dataAccess = new DataAccess(User) 
 const controller = new Controller(dataAccess)
 
