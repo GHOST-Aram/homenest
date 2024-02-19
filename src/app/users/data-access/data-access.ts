@@ -13,7 +13,7 @@ export class DataAccess{
     }
 
     public findByEmail = async(email: string): Promise<HydratedUserDoc | null> =>{
-        return await this.model.findOne({ email })
+        return await this.model.findOne({ email }, '-password')
     }
 
     public findById = async(id: string): Promise<HydratedUserDoc | null> =>{
@@ -21,7 +21,7 @@ export class DataAccess{
     }
 
     public findMany = async(pagination: Paginator): Promise<HydratedUserDoc[]> =>{
-        return await this.model.find().skip(pagination.skip).limit(pagination.limit)
+        return await this.model.find({}, '-password').skip(pagination.skip).limit(pagination.limit)
     }
 
     public findByIdAndUpdate = async(id: string, updateDoc: User | Object
