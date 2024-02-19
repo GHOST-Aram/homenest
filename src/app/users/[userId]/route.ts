@@ -10,7 +10,26 @@ import { handleServerErrors } from "@/z-library/HTTP/http-errors";
 const dataAccess = new DataAccess(User) 
 const controller = new Controller(dataAccess)
 
-
+export const GET = async(_request: NextRequest, { params }: urlParams): Promise<NextResponse> =>{
+    const userId = params.userId
+    
+    try {
+        validateReferenceId(userId)
+    } catch (error:any) {
+        return new NextResponse(JSON.stringify(error.message), {
+            status: 400,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+    }
+    
+    try {
+        return controller.getOne(userId)
+    } catch (error) {
+        return handleServerErrors()
+    }
+}
 
 export const PUT = async(request: NextRequest, { params }: urlParams): Promise<NextResponse> =>{
     const updateData: User = await request.json()
@@ -48,7 +67,7 @@ export const PATCH = async(request: NextRequest, { params }: urlParams ) : Promi
     }  
 }
 
-export const DELETE = async(request: NextRequest, { params }:urlParams ) =>{
+export const DELETE = async(_request: NextRequest, { params }:urlParams ) =>{
     const userId = params.userId
     
     try {
@@ -67,7 +86,6 @@ export const DELETE = async(request: NextRequest, { params }:urlParams ) =>{
     } catch (error) {
         return handleServerErrors()
     }
-    
 }
 
 type urlParams = {
