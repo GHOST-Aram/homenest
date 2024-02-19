@@ -6,6 +6,7 @@ import '../config/db'
 import { validator } from "@/z-library/validation/validator";
 import { userModificationSchema, userSchema } from "../validation-schema";
 import { handleServerErrors } from "@/z-library/HTTP/http-errors";
+import { ReferenceIDError } from "@/z-library/validation/validation-errors";
 
 const dataAccess = new DataAccess(User) 
 const controller = new Controller(dataAccess)
@@ -15,14 +16,12 @@ export const GET = async(_request: NextRequest, { params }: urlParams): Promise<
     
     try {
         validator.validateReferenceId(userId)
-    } catch (error:any) {
-        return validator.handleValidationErrors(error.message)
-    }
-    
-    try {
         return controller.getOne(userId)
     } catch (error) {
-        return handleServerErrors()
+        if(error instanceof ReferenceIDError)
+            return validator.handleValidationErrors(error.message)
+        else
+            return handleServerErrors()
     }
 }
 
@@ -77,14 +76,13 @@ export const DELETE = async(_request: NextRequest, { params }:urlParams ) =>{
     
     try {
         validator.validateReferenceId(userId)
-    } catch (error:any) {
-        return validator.handleValidationErrors(error.message)
-    }
-    
-    try {
         return controller.deleteOne(userId)
     } catch (error) {
-        return handleServerErrors()
+        if (error instanceof ReferenceIDError){
+            return validator.handleValidationErrors(error.message)
+        } else {
+            return handleServerErrors()            
+        }
     }
 }
 

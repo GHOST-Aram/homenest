@@ -1,6 +1,7 @@
 import { ObjectSchema, ValidationError } from "joi";
 import { isValidObjectId } from "mongoose";
 import { NextResponse } from "next/server";
+import { ReferenceIDError } from "./validation-errors";
 
 class Validator {
    
@@ -13,10 +14,12 @@ class Validator {
     public validateReferenceId = (id: string) =>{
         if(isValidObjectId(id))
             return
-        throw new Error('Invalid reference id. Id must be a hexadecimal string of length 24.')
+        throw new ReferenceIDError(
+            'Invalid reference Id. Id must be a hexadecimal string of length 24.'
+        )
     }
     
-    public handleValidationErrors = (errors: ValidationError): NextResponse =>{
+    public handleValidationErrors = (errors: ValidationError | string): NextResponse =>{
         
         return new NextResponse(JSON.stringify(errors), {
             status: 400,
