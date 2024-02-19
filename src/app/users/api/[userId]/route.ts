@@ -35,8 +35,8 @@ export const PUT = async(request: NextRequest, { params }: urlParams): Promise<N
     const updateData: User = await request.json()
     const userId = params.userId
 
-    const validator = new Validator(userSchema)
-    const validationErrors = validator.validateUserInput(updateData)
+    const validator = new Validator()
+    const validationErrors = validator.validateUserInput(updateData, userSchema)
 
     if(validationErrors){
         return validator.handleValidationErrors(validationErrors)
@@ -53,8 +53,8 @@ export const PATCH = async(request: NextRequest, { params }: urlParams ) : Promi
     const updateData: User = await request.json()
     const userId = params.userId
 
-    const validator = new Validator(userModificationSchema)
-    const validationErrors = validator.validateUserInput(updateData)
+    const validator = new Validator()
+    const validationErrors = validator.validateUserInput(updateData, userModificationSchema)
 
     if(validationErrors){
         return validator.handleValidationErrors(validationErrors)

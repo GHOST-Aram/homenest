@@ -3,14 +3,10 @@ import { isValidObjectId } from "mongoose";
 import { NextResponse } from "next/server";
 
 export class Validator {
-    private validationSchema: ObjectSchema
+   
 
-    constructor(schema: ObjectSchema){
-        this.validationSchema = schema
-    }
-
-    public validateUserInput = (userData: Object): ValidationError | undefined =>{
-        const { error }  = this.validationSchema.validate(userData,{ abortEarly: false})
+    public validateUserInput = (userData: Object,  validationSchema: ObjectSchema): ValidationError | undefined =>{
+        const { error }  = validationSchema.validate(userData,{ abortEarly: false})
         return error
     }
 

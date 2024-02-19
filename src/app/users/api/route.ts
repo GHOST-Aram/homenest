@@ -12,8 +12,8 @@ const controller = new Controller(dataAccess)
 
 export const POST = async(request: NextRequest) =>{
     const userData:User = await request.json()
-    const validator = new Validator(userSchema)
-    const validationErrors = validator.validateUserInput(userData)
+    const validator = new Validator()
+    const validationErrors = validator.validateUserInput(userData, userSchema)
 
     if(validationErrors){
         return validator.handleValidationErrors(validationErrors)
@@ -22,7 +22,7 @@ export const POST = async(request: NextRequest) =>{
             return await controller.addNew(userData)
         } catch(error){
             return handleServerErrors()
-        }
+        } 
     }
 }
 
