@@ -26,7 +26,17 @@ export const POST = async(request: NextRequest) =>{
     }
 }
 
-export const GET = async(request: NextRequest) =>{
+export const GET = async(request: NextRequest) =>{ 
+    const paginator = paginate(request)
+    
+    try {
+        return await controller.getMany(paginator)
+    } catch (error) {
+        return handleServerErrors()
+    }
+}
+
+const paginate = (request: NextRequest): Paginator =>{
     const page = request.nextUrl.searchParams.get("page")
     const limit = request.nextUrl.searchParams.get("limit")
 
@@ -38,10 +48,5 @@ export const GET = async(request: NextRequest) =>{
         skip: skipDocsNumber ? skipDocsNumber : 0
     }
 
-    
-    try {
-        return await controller.getMany(paginator)
-    } catch (error) {
-        return handleServerErrors()
-    }
+    return paginator
 }
