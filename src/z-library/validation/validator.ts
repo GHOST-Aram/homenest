@@ -6,9 +6,10 @@ import { ReferenceIDError } from "./validation-errors";
 class Validator {
    
 
-    public validateUserInput = (userData: Object,  validationSchema: ObjectSchema): ValidationError | undefined =>{
-        const { error }  = validationSchema.validate(userData,{ abortEarly: false})
-        return error
+    public validateUserInput = async(userData: Object,  validationSchema: ObjectSchema
+        ): Promise<ValidationError | undefined> =>{
+            return await validationSchema.validateAsync(userData,{ abortEarly: false})
+        
     }
 
     public validateReferenceId = (id: string) =>{

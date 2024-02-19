@@ -7,6 +7,7 @@ import { validator } from "@/z-library/validation/validator";
 import { userModificationSchema, userSchema } from "../validation-schema";
 import { handleServerErrors } from "@/z-library/HTTP/http-errors";
 import { ReferenceIDError } from "@/z-library/validation/validation-errors";
+import Joi from "joi";
 
 const dataAccess = new DataAccess(User) 
 const controller = new Controller(dataAccess)
@@ -26,27 +27,28 @@ export const GET = async(_request: NextRequest, { params }: urlParams): Promise<
 }
 
 export const PUT = async(request: NextRequest, { params }: urlParams): Promise<NextResponse> =>{
-    const updateData: User = await request.json()
     const userId = params.userId
-
+    const updateData: User = await request.json()
+ 
     try {
         validator.validateReferenceId(userId)
-    } catch (error:any) {
-        return validator.handleValidationErrors(error.message)
-    }
+        await validator.validateUserInput(updateData, userSchema)
 
-    const validationErrors = validator.validateUserInput(updateData, userSchema)
+        return controller.updateOne(userId, updateData)
+    } catch (error) {
+        
+        if(error instanceof Joi.ValidationError){
+            return validator.handleValidationErrors(error)
 
-    if(validationErrors){
-        return validator.handleValidationErrors(validationErrors)
-    } else {
-        try {
-            return controller.updateOne(userId, updateData)
-        } catch (error) {
+        } else if (error instanceof ReferenceIDError){
+            return validator.handleValidationErrors(error.message)
+            
+        } else {
             return handleServerErrors()
         }
-    }  
-}
+    }
+}  
+
 
 export const PATCH = async(request: NextRequest, { params }: urlParams ) : Promise<NextResponse> =>{
     const updateData: User = await request.json()
@@ -54,21 +56,22 @@ export const PATCH = async(request: NextRequest, { params }: urlParams ) : Promi
 
     try {
         validator.validateReferenceId(userId)
-    } catch (error:any) {
-        return validator.handleValidationErrors(error.message)
-    }
+        await validator.validateUserInput(updateData, userModificationSchema)
 
-    const validationErrors = validator.validateUserInput(updateData, userModificationSchema)
+        return controller.modifyOne(userId, updateData)
 
-    if(validationErrors){
-        return validator.handleValidationErrors(validationErrors)
-    } else {
-        try {
-            return controller.modifyOne(userId, updateData)
-        } catch (error) {
+    } catch (error) {
+        
+        if(error instanceof Joi.ValidationError){
+            return validator.handleValidationErrors(error)
+
+        } else if (error instanceof ReferenceIDError){
+            return validator.handleValidationErrors(error.message)
+
+        } else {
             return handleServerErrors()
         }
-    }  
+    }
 }
 
 export const DELETE = async(_request: NextRequest, { params }:urlParams ) =>{
@@ -76,6 +79,7 @@ export const DELETE = async(_request: NextRequest, { params }:urlParams ) =>{
     
     try {
         validator.validateReferenceId(userId)
+        
         return controller.deleteOne(userId)
     } catch (error) {
         if (error instanceof ReferenceIDError){
