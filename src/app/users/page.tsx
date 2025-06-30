@@ -7,6 +7,7 @@ import {
     Button, 
     FormControl, 
     FormControlLabel, 
+    FormHelperText, 
     FormLabel, 
     Radio, 
     RadioGroup 
@@ -55,7 +56,10 @@ const SignUpForm = () => {
                     <Box className='w-full flex flex-col lg:flex-row gap-4 justify-space-between'>
                         <FormControl fullWidth>
                             <TextField placeholder='Full name' sx={{width: '100%'}} 
-                                required type='text' 
+                                required 
+                                label='Full Name'
+                                variant='outlined'
+                                type='text' 
                                 value={formData.fullName} 
                                 onChange={(e: ChangeEvent<HTMLInputElement>) => { collectFormData(e) }} 
                                 name = {'fullName'}
@@ -63,7 +67,10 @@ const SignUpForm = () => {
                         </FormControl>
                         <FormControl fullWidth>
                             <TextField placeholder='Email' sx={{width: '100%'}}
-                                required type='email' 
+                                required 
+                                label='Email'
+                                variant='outlined'
+                                type='email' 
                                 value={formData.email} 
                                 onChange={(e: ChangeEvent<HTMLInputElement>) => collectFormData(e)} 
                                 name ='email'
@@ -72,20 +79,29 @@ const SignUpForm = () => {
                     </Box>
                     <Box className='w-full flex flex-col lg:flex-row gap-4 justify-space-between'>
                         <FormControl fullWidth>
+                            
                             <TextField placeholder='Password' sx={{width: '100%'}}
-                                required type='password' 
+                                required 
+                                type='password' 
+                                label='Password'
+                                variant='outlined'
                                 value={formData.password1} 
                                 onChange={(e: ChangeEvent<HTMLInputElement>) => collectFormData(e)} 
                                 name='password1'
                             />
+                            <FormHelperText>Enter an aplhanumeric password of length 8-24</FormHelperText>
                         </FormControl>
                         <FormControl fullWidth>
                             <TextField placeholder='Confirm Password' sx={{width: '100%'}}
-                                required type='password' 
+                                required 
+                                label='Confirm Password'
+                                variant='outlined'
+                                type='password' 
                                 value={formData.password2} 
                                 onChange={(e: ChangeEvent<HTMLInputElement>) => collectFormData(e)} 
                                 name='password2'
                             />
+                            <FormHelperText>Repeat password.</FormHelperText>
                         </FormControl>
                     </Box>
                     <FormControl fullWidth>
@@ -100,8 +116,7 @@ const SignUpForm = () => {
                             <FormControlLabel value={'tenant'} control={<Radio />} label={'Tenant'}/>
                             <FormControlLabel value={'landlord'} control={<Radio />} label={'Landlord'}/>
                         </RadioGroup>
-                    </FormControl>
-                    
+                    </FormControl> 
                     <Button 
                         className='w-full bg-blue-700 text-white'
                         variant='contained' 
